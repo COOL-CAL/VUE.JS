@@ -1,60 +1,75 @@
 <template>
-  <h1>HELLO</h1>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <div>{{ hello }}</div>
-  <input type="text" v-model="hello">
-  <button v-on:click="changeHello">Change Welcome</button> 
-  <!-- v-on:click -> @click 으로 줄여서 사용 가능 -->
-  <FavoriteSinger />
-  <FavoriteSingerProps imgSrc="https://pbs.twimg.com/media/EDkRGSMXUAAvprm.jpg" />
-
+  <TodoHeader></TodoHeader>
+  <TodoInput @childAddTodo="addTodo"></TodoInput>
+  <TodoList :propsItems="todoItems" @childRemoveTodo="removeTodo"></TodoList>
+  <TodoFooter @clearTodo="clearTodo"></TodoFooter>
 </template>
 
+
 <script>
-import FavoriteSinger from './components/FavoriteSinger.vue';
-import FavoriteSingerProps from './components/FavoriteSingerProps.vue';
+import TodoHeader from './components/todo/TodoHeader.vue';
+import TodoInput from './components/todo/TodoInput.vue';
+import TodoList from './components/todo/TodoList.vue';
+import TodoFooter from './components/todo/TodoFooter.vue';
 
 export default {
     name: "App",
     data() {
-        return {
-            hello: "Welcome"
-        };
+      return {
+        todoItems: []
+      }
     },
     methods: {
-        changeHello() {
-            this.hello = "Hi";
-        }
+      addTodo(todoItem) {
+        this.todoItems.push(todoItem);
+      },
+      removeTodo(idx) {
+        this.todoItems.splice(idx, 1); //(start number, delete amount)
+      },
+      clearTodo() {
+        this.todoItems.splice(0);
+      },
+      changeValue() {
+        const json = JSON.stringify(this.todoItems);
+        localStorage.setItem('todoItems', json);
+      }
     },
-  components: {
-        FavoriteSinger,
-        FavoriteSingerProps
-  }
+    components: {
+      TodoHeader,
+      TodoInput,
+      TodoList,
+      TodoFooter
+    },
+    watch: {
+      todoItems: {
+        deep: true,
+        handler() {
+          this.changeValue();
+        }
+      }
+    },
+    created() { //lifecycle hooks 참조
+        const json = localStorage.getItem("todoItems");
+        if(json) {
+          const todoItems = JSON.parse(json);
+          todoItems.forEach(item => {
+            this.todoItems.push(item);
+          })
+        }
+    }
+    
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  body {
+    text-align: center;
+    background-color: #f6f6f8;
+  }
+  input {
+    border-style: groove;
+    width: 200px;
+  }
+  button { border-style: groove; }
+  .shadow { box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03); }
 </style>
