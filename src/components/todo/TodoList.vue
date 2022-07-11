@@ -1,30 +1,21 @@
 <template>
     <section>
-        <ul>
-            <li :key="todoItem.key" v-for="(todoItem, idx) in propsItems" class="shadow">
+        <transition-group name="list" tag="ul">
+            <li :key="todoItem.key" v-for="todoItem in propsItems" class="shadow">
                 <i class="checkBtn fas fa-check" aria-hidden="true"></i>
-                {{ todoItem }}
-                <span class="removeBtn" type="button" @click="removeTodo(idx)">
+                {{ todoItem.value }}
+                <span class="removeBtn" type="button" @click="removeTodo(todoItem.key)">
                     <i class="far fa-trash-alt" aria-hidden="true"></i>
                 </span>
             </li>
-        </ul>
+        </transition-group>
     </section>
 </template>
 
-<script>
-export default {
-    props: { propsItems: Array },
-    methods: {
-        removeTodo(idx) {
-            this.$emit('childRemoveTodo', idx); //$emit('이벤트명', 실행할 작업)
-        }
-    },
-    
-}
-</script>
-
 <style scoped>
+    .list-enter-active, .list-leave-active { transition: all 0.5s; }
+    .list-enter-from, .list-leave-to { opacity: 0; transform: translateY(30px);}
+
     ul { 
         list-style-type: none;
         padding-left: 0;
@@ -51,3 +42,15 @@ export default {
         color: #de4343;
     }
 </style>
+
+<script>
+export default {
+    props: { propsItems: Array },
+    methods: {
+        removeTodo(key) {
+            this.$emit('childRemoveTodo', key); //$emit('이벤트명', 실행할 작업)
+        }
+    },
+    
+}
+</script>

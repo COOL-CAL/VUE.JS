@@ -16,22 +16,35 @@ export default {
     name: "App",
     data() {
       return {
-        todoItems: []
+        todoItems: [],
+        cnt: 0
       }
     },
     methods: {
       addTodo(todoItem) {
-        this.todoItems.push(todoItem);
+        this.todoItems.push(
+          {
+            key: this.cnt++,
+            value: todoItem
+          }
+        )
       },
-      removeTodo(idx) {
-        this.todoItems.splice(idx, 1); //(start number, delete amount)
+      removeTodo(key) {
+        // this.todoItems.splice(idx, 1); //(start number, delete amount)
+        this.todoItems.forEach((item, idx) => { //중간 번호 지웠을 때 key값 바로 이어지도록 바꿈
+          if(item.key === key) {
+            this.todoItems.splice(idx, 1);
+          }
+        })
       },
       clearTodo() {
         this.todoItems.splice(0);
+        this.cnt = 0
       },
       changeValue() {
         const json = JSON.stringify(this.todoItems);
         localStorage.setItem('todoItems', json);
+        localStorage.setItem('cnt', this.cnt);
       }
     },
     components: {
@@ -54,7 +67,9 @@ export default {
           const todoItems = JSON.parse(json);
           todoItems.forEach(item => {
             this.todoItems.push(item);
-          })
+          });
+          const cnt = localStorage.getItem("cnt");
+          this.cnt = cnt;
         }
     }
     
