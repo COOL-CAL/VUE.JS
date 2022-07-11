@@ -1,8 +1,11 @@
 <template>
-  <TodoHeader></TodoHeader>
-  <TodoInput @childAddTodo="addTodo"></TodoInput>
-  <TodoList :propsItems="todoItems" @childRemoveTodo="removeTodo"></TodoList>
-  <TodoFooter @clearTodo="clearTodo"></TodoFooter>
+  <div id="app">
+    <TodoHeader></TodoHeader>
+    <TodoInput @childAddTodo="addTodo" @showModal="showModal"></TodoInput>
+    <TodoList :propsItems="todoItems" @childRemoveTodo="removeTodo"></TodoList>
+    <TodoFooter @clearTodo="clearTodo"></TodoFooter>
+  </div>
+  <AlertModal :show="modalShow" @close="closeModal" header="Alert" body="Type contents."></AlertModal>
 </template>
 
 
@@ -11,13 +14,15 @@ import TodoHeader from './components/todo/TodoHeader.vue';
 import TodoInput from './components/todo/TodoInput.vue';
 import TodoList from './components/todo/TodoList.vue';
 import TodoFooter from './components/todo/TodoFooter.vue';
+import AlertModal from './components/common/AlertModal.vue';
 
 export default {
     name: "App",
     data() {
       return {
         todoItems: [],
-        cnt: 0
+        cnt: 0,
+        modalShow: false,
       }
     },
     methods: {
@@ -45,13 +50,21 @@ export default {
         const json = JSON.stringify(this.todoItems);
         localStorage.setItem('todoItems', json);
         localStorage.setItem('cnt', this.cnt);
+      },
+      showModal() {
+        this.modalShow = true;
+      },
+      closeModal() {
+        this.modalShow = false;
       }
     },
+
     components: {
       TodoHeader,
       TodoInput,
       TodoList,
-      TodoFooter
+      TodoFooter,
+      AlertModal
     },
     watch: {
       todoItems: {

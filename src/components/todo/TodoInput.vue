@@ -46,9 +46,11 @@ export default {
             const value = this.newTodoItem.trim(); //trim: 양쪽에 있는 빈 칸 지움
             // localStorage.setItem(value, value);
             this.$emit('childAddTodo', value);
+            }else{
+                this.$emit('showModal');
             }
             this.newTodoItem = '';
-        }
+        },
     }
 }
 </script>

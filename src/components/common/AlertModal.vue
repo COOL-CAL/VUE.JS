@@ -1,7 +1,16 @@
 <script>
 export default {
+  name: "AlertModal",
   props: {
-    show: Boolean
+    show: Boolean,
+    header: String,
+    body: String
+  },
+  methods: {
+    noAction(e) {
+      console.log(e);
+      e.stopPropagation();
+    } //이거 쓰려면 @click="noAction" 적어줘야 함. 아니면 @click.stop=""
   }
 }
 </script>
@@ -9,19 +18,18 @@ export default {
 <template>
   <Transition name="modal">
     <div v-if="show" class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
+      <div class="modal-wrapper" style="z-index:10;" @click="$emit('close')">
+        <div class="modal-container" @click="noAction">
           <div class="modal-header">
-            <slot name="header">default header</slot>
+            <slot name="header">{{ header }}</slot>
           </div>
 
           <div class="modal-body">
-            <slot name="body">default body</slot>
+            <slot name="body">{{ body }}</slot>
           </div>
 
           <div class="modal-footer">
             <slot name="footer">
-              default footer
               <button
                 class="modal-default-button"
                 @click="$emit('close')"
