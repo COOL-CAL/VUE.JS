@@ -1,15 +1,49 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <h1>HELLO</h1>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <div>{{ hello }}</div>
+  <input type="text" v-model="hello">
+  <button v-on:click="changeHello">Change Welcome</button> 
+  <!-- v-on:click -> @click 으로 줄여서 사용 가능 -->
+  <FavoriteSinger />
+  <FavoriteSingerProps imgSrc="https://pbs.twimg.com/media/EDkRGSMXUAAvprm.jpg" />
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FavoriteSinger from './components/FavoriteSinger.vue';
+import FavoriteSingerProps from './components/FavoriteSingerProps.vue';
 
 export default {
-  name: 'App',
+    name: "App",
+    data() {
+        return {
+            hello: "Welcome"
+        };
+    },
+    methods: {
+        changeHello() {
+            this.hello = "Hi";
+        }
+    },
   components: {
-    HelloWorld
+        FavoriteSinger,
+        FavoriteSingerProps
   }
 }
 </script>
