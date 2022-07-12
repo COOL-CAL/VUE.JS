@@ -51,6 +51,7 @@ export default {
         margin-right: 15px;
     }
     .removeBtn {
+        line-height: 50px;
         margin-left: auto;
         color: #de4343;
     }
