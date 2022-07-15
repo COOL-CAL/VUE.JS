@@ -35,6 +35,7 @@ export default {
         axios.post('/todo/index', param)
         .then(res => {
           if(res.status === 200 && res.data) {
+            console.log(res);
             const item = {
               'itodo': res.data.result,
               'todo': todoItem,
